@@ -9,4 +9,6 @@ Screenshots
 
 Installing Surfboard
 ---
-Add the contents of the FSLineChart project to your directory.
+Add the contents of the FSLineChart project to your directory or simply add the following line to your Podfile:
+
+    pod "PhoneKit"
