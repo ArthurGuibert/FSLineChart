@@ -7,7 +7,7 @@ Screenshots
 ---
 <img src="Screenshots/fslinechart.png" width=50% />
 
-Installing Surfboard
+Installing FSLineChart
 ---
 Add the contents of the FSLineChart project to your directory or simply add the following line to your Podfile:
 
