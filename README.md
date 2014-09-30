@@ -5,7 +5,7 @@ A line chart library for iOS
 
 Screenshots
 ---
-![Intro](Screenshots/fslinechart.png)
+<img src="Screenshots/fslinechart.png" width=50% />
 
 Installing Surfboard
 ---
