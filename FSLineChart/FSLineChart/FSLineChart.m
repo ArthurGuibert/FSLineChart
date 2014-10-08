@@ -180,6 +180,11 @@
 
 - (void)strokeChart
 {
+    if([_data count] == 0) {
+        NSLog(@"Warning: no data provided for the chart");
+        return;
+    }
+    
     UIBezierPath *path = [UIBezierPath bezierPath];
     UIBezierPath *noPath = [UIBezierPath bezierPath];
     UIBezierPath* fill = [UIBezierPath bezierPath];
