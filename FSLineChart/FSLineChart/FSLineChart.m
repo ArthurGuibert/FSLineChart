@@ -32,8 +32,6 @@
 @property (nonatomic) CGMutablePathRef initialPath;
 @property (nonatomic) CGMutablePathRef newPath;
 
-
-
 @end
 
 @implementation FSLineChart
@@ -64,7 +62,7 @@
             _max = [number floatValue];
     }
     
-    _max = [self getUpperRoundNumber:_max forGridStep:_gridStep];
+    _max = [self getUpperRoundNumber:_max forGridStep:_verticalGridStep];
     
     // No data
     if(isnan(_max)) {
@@ -74,10 +72,10 @@
     [self strokeChart];
     
     if(_labelForValue) {
-        for(int i=0;i<_gridStep;i++) {
-            CGPoint p = CGPointMake(_margin + _axisWidth, _axisHeight + _margin - (i + 1) * _axisHeight / _gridStep);
+        for(int i=0;i<_verticalGridStep;i++) {
+            CGPoint p = CGPointMake(_margin + _axisWidth, _axisHeight + _margin - (i + 1) * _axisHeight / _verticalGridStep);
             
-            NSString* text = _labelForValue(_max / _gridStep * (i + 1));
+            NSString* text = _labelForValue(_max / _verticalGridStep * (i + 1));
             CGRect rect = CGRectMake(_margin, p.y + 2, self.frame.size.width - _margin * 2 - 4.0f, 14);
             
             float width =
@@ -101,10 +99,10 @@
     
     if(_labelForIndex) {
         float scale = 1.0f;
-        int q = (int)_data.count / _gridStep;
-        scale = (CGFloat)(q * _gridStep) / (CGFloat)(_data.count - 1);
+        int q = (int)_data.count / _horizontalGridStep;
+        scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
         
-        for(int i=0;i<_gridStep + 1;i++) {
+        for(int i=0;i<_horizontalGridStep + 1;i++) {
             NSInteger itemIndex = q * i;
             if(itemIndex >= _data.count)
             {
@@ -112,7 +110,7 @@
             }
             
             NSString* text = _labelForIndex(itemIndex);
-            CGPoint p = CGPointMake(_margin + i * (_axisWidth / _gridStep) * scale, _axisHeight + _margin);
+            CGPoint p = CGPointMake(_margin + i * (_axisWidth / _horizontalGridStep) * scale, _axisHeight + _margin);
             
             UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - 4.0f, p.y + 2, self.frame.size.width, 14)];
             label.text = text;
@@ -148,15 +146,15 @@
     CGContextStrokePath(ctx);
     
     float scale = 1.0f;
-    int q = (int)_data.count / _gridStep;
-    scale = (CGFloat)(q * _gridStep) / (CGFloat)(_data.count - 1);
+    int q = (int)_data.count / _horizontalGridStep;
+    scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
     
     // draw grid
-    if (_drawInnerGrid)  {
-        for(int i=0;i<_gridStep;i++) {
+    if(_drawInnerGrid) {
+        for(int i=0;i<_horizontalGridStep;i++) {
             CGContextSetLineWidth(ctx, 0.5);
             
-            CGPoint point = CGPointMake((1 + i) * _axisWidth / _gridStep * scale + _margin, _margin);
+            CGPoint point = CGPointMake((1 + i) * _axisWidth / _horizontalGridStep * scale + _margin, _margin);
             
             CGContextMoveToPoint(ctx, point.x, point.y);
             CGContextAddLineToPoint(ctx, point.x, _axisHeight + _margin);
@@ -169,25 +167,21 @@
             CGContextStrokePath(ctx);
         }
         
-        for(int i=0;i<_gridStep;i++) {
+        for(int i=0;i<_verticalGridStep;i++) {
             CGContextSetLineWidth(ctx, 0.5);
             
-            CGPoint point = CGPointMake(_margin, (i) * _axisHeight / _gridStep + _margin);
+            CGPoint point = CGPointMake(_margin, (i) * _axisHeight / _verticalGridStep + _margin);
             
             CGContextMoveToPoint(ctx, point.x, point.y);
             CGContextAddLineToPoint(ctx, _axisWidth + _margin, point.y);
             CGContextStrokePath(ctx);
         }
-    } 
+    }
+    
 }
 
 - (void)strokeChart
 {
-    if([_data count] == 0) {
-        NSLog(@"Warning: no data provided for the chart");
-        return;
-    }
-    
     UIBezierPath *path = [UIBezierPath bezierPath];
     UIBezierPath *noPath = [UIBezierPath bezierPath];
     UIBezierPath* fill = [UIBezierPath bezierPath];
@@ -226,17 +220,26 @@
         [noPath addLineToPoint:CGPointMake(_margin + i * (_axisWidth / (_data.count - 1)), _axisHeight + _margin)];
     }
     
-    CAShapeLayer *fillLayer = [CAShapeLayer layer];
-    fillLayer.frame = self.bounds;
-    fillLayer.bounds = self.bounds;
-    fillLayer.path = fill.CGPath;
-    fillLayer.strokeColor = nil;
-    fillLayer.fillColor = [_color colorWithAlphaComponent:0.25].CGColor;
-    fillLayer.lineWidth = 0;
-    fillLayer.lineJoin = kCALineJoinRound;
-    
-    [self.layer addSublayer:fillLayer];
-    
+    if(_fillColor) {
+        CAShapeLayer *fillLayer = [CAShapeLayer layer];
+        fillLayer.frame = self.bounds;
+        fillLayer.bounds = self.bounds;
+        fillLayer.path = fill.CGPath;
+        fillLayer.strokeColor = nil;
+        fillLayer.fillColor = _fillColor.CGColor;
+        fillLayer.lineWidth = 0;
+        fillLayer.lineJoin = kCALineJoinRound;
+        
+        [self.layer addSublayer:fillLayer];
+        
+        CABasicAnimation *fillAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+        fillAnimation.duration = 0.25;
+        fillAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        fillAnimation.fillMode = kCAFillModeForwards;
+        fillAnimation.fromValue = (id)noFill.CGPath;
+        fillAnimation.toValue = (id)fill.CGPath;
+        [fillLayer addAnimation:fillAnimation forKey:@"path"];
+    }
     
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
     pathLayer.frame = self.bounds;
@@ -249,27 +252,30 @@
     
     [self.layer addSublayer:pathLayer];
     
-    CABasicAnimation *fillAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
-    fillAnimation.duration = 0.25;
-    fillAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    fillAnimation.fillMode = kCAFillModeForwards;
-    fillAnimation.fromValue = (id)noFill.CGPath;
-    fillAnimation.toValue = (id)fill.CGPath;
-    [fillLayer addAnimation:fillAnimation forKey:@"path"];
+    if(_fillColor) {
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+        pathAnimation.duration = 0.25;
+        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        pathAnimation.fromValue = (__bridge id)(noPath.CGPath);
+        pathAnimation.toValue = (__bridge id)(path.CGPath);
+        [pathLayer addAnimation:pathAnimation forKey:@"path"];
+    } else {
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        pathAnimation.duration = 0.5;
+        pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+        pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        [pathLayer addAnimation:pathAnimation forKey:@"path"];
+    }
     
-    
-    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
-    pathAnimation.duration = 0.25;
-    pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    pathAnimation.fromValue = (__bridge id)(noPath.CGPath);
-    pathAnimation.toValue = (__bridge id)(path.CGPath);
-    [pathLayer addAnimation:pathAnimation forKey:@"path"];
 }
 
 - (void)setDefaultParameters
 {
     _color = [UIColor fsLightBlue];
-    _gridStep = 3;
+    _fillColor = [_color colorWithAlphaComponent:0.25];
+    _verticalGridStep = 3;
+    _horizontalGridStep = 3;
     _margin = 5.0f;
     _axisWidth = self.frame.size.width - 2 * _margin;
     _axisHeight = self.frame.size.height - 2 * _margin;
@@ -291,6 +297,12 @@
     }
     
     return n * scale / 2.0f;
+}
+
+- (void)setGridStep:(int)gridStep
+{
+    _verticalGridStep = gridStep;
+    _horizontalGridStep = gridStep;
 }
 
 @end

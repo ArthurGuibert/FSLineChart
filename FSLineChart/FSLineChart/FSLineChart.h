@@ -31,6 +31,9 @@ typedef NSString *(^FSLabelForValueGetter)(CGFloat value);
 
 // Number of visible step in the chart
 @property (nonatomic, readwrite) int gridStep;
+@property (nonatomic, readwrite) int verticalGridStep;
+@property (nonatomic, readwrite) int horizontalGridStep;
+
 
 // Margin of the chart
 @property (nonatomic, readwrite) CGFloat margin;
@@ -41,6 +44,7 @@ typedef NSString *(^FSLabelForValueGetter)(CGFloat value);
 // Decoration parameters, let you pick the color of the line as well as the color of the axis
 @property (nonatomic, readwrite) UIColor* axisColor;
 @property (nonatomic, readwrite) UIColor* color;
+@property (nonatomic, readwrite) UIColor* fillColor;
 
 @property (copy) FSLabelForIndexGetter labelForIndex;
 @property (copy) FSLabelForValueGetter labelForValue;

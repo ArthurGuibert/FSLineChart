@@ -67,8 +67,10 @@
     // Creating the line chart
     FSLineChart* lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 260, [UIScreen mainScreen].bounds.size.width - 40, 166)];
     
-    lineChart.gridStep = 4;
+    lineChart.verticalGridStep = 4;
+    lineChart.horizontalGridStep = 2;
     lineChart.color = [UIColor fsOrange];
+    lineChart.fillColor = nil;
     
     lineChart.labelForIndex = ^(NSUInteger item) {
         return [NSString stringWithFormat:@"%lu%%",(unsigned long)item];

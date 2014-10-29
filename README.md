@@ -34,6 +34,26 @@ lineChart.labelForValue = ^(CGFloat value) {
 [lineChart setChartData:chartData];
 ```
 
+You can also set several parameters for the grid, such as the grid step, vertically or horizontally:
+
+```objc
+@property (nonatomic, readwrite) int verticalGridStep;
+@property (nonatomic, readwrite) int horizontalGridStep;
+```
+
+And to hide the grid just set the drawInnedGrid variable to false:
+
+```objc
+@property(nonatomic, readwrite) BOOL drawInnerGrid; 
+```
+
+If you don't want to fill the chart just set the fillColor variable to nil:
+
+```objc
+@property (nonatomic, readwrite) UIColor* fillColor;
+```
+
+
 Examples
 ---
 You can clone the repo to see a simple example. I'm also using FSLineChart on [ChartLoot](https://github.com/ArthurGuibert/ChartLoot) if you want to see the integration in a bigger project.
