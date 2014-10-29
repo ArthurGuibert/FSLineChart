@@ -32,6 +32,8 @@
 @property (nonatomic) CGMutablePathRef initialPath;
 @property (nonatomic) CGMutablePathRef newPath;
 
+
+
 @end
 
 @implementation FSLineChart
@@ -150,32 +152,33 @@
     scale = (CGFloat)(q * _gridStep) / (CGFloat)(_data.count - 1);
     
     // draw grid
-    for(int i=0;i<_gridStep;i++) {
-        CGContextSetLineWidth(ctx, 0.5);
+    if (_drawInnerGrid)  {
+        for(int i=0;i<_gridStep;i++) {
+            CGContextSetLineWidth(ctx, 0.5);
+            
+            CGPoint point = CGPointMake((1 + i) * _axisWidth / _gridStep * scale + _margin, _margin);
+            
+            CGContextMoveToPoint(ctx, point.x, point.y);
+            CGContextAddLineToPoint(ctx, point.x, _axisHeight + _margin);
+            CGContextStrokePath(ctx);
+            
+            
+            CGContextSetLineWidth(ctx, 2);
+            CGContextMoveToPoint(ctx, point.x - 0.5f, _axisHeight + _margin);
+            CGContextAddLineToPoint(ctx, point.x - 0.5f, _axisHeight + _margin + 3);
+            CGContextStrokePath(ctx);
+        }
         
-        CGPoint point = CGPointMake((1 + i) * _axisWidth / _gridStep * scale + _margin, _margin);
-        
-        CGContextMoveToPoint(ctx, point.x, point.y);
-        CGContextAddLineToPoint(ctx, point.x, _axisHeight + _margin);
-        CGContextStrokePath(ctx);
-        
-        
-        CGContextSetLineWidth(ctx, 2);
-        CGContextMoveToPoint(ctx, point.x - 0.5f, _axisHeight + _margin);
-        CGContextAddLineToPoint(ctx, point.x - 0.5f, _axisHeight + _margin + 3);
-        CGContextStrokePath(ctx);
-    }
-    
-    for(int i=0;i<_gridStep;i++) {
-        CGContextSetLineWidth(ctx, 0.5);
-        
-        CGPoint point = CGPointMake(_margin, (i) * _axisHeight / _gridStep + _margin);
-        
-        CGContextMoveToPoint(ctx, point.x, point.y);
-        CGContextAddLineToPoint(ctx, _axisWidth + _margin, point.y);
-        CGContextStrokePath(ctx);
-    }
-    
+        for(int i=0;i<_gridStep;i++) {
+            CGContextSetLineWidth(ctx, 0.5);
+            
+            CGPoint point = CGPointMake(_margin, (i) * _axisHeight / _gridStep + _margin);
+            
+            CGContextMoveToPoint(ctx, point.x, point.y);
+            CGContextAddLineToPoint(ctx, _axisWidth + _margin, point.y);
+            CGContextStrokePath(ctx);
+        }
+    } 
 }
 
 - (void)strokeChart
@@ -271,6 +274,7 @@
     _axisWidth = self.frame.size.width - 2 * _margin;
     _axisHeight = self.frame.size.height - 2 * _margin;
     _axisColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+    _drawInnerGrid = YES;
 }
 
 - (CGFloat)getUpperRoundNumber:(CGFloat)value forGridStep:(int)gridStep
