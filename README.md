@@ -34,23 +34,48 @@ lineChart.labelForValue = ^(CGFloat value) {
 [lineChart setChartData:chartData];
 ```
 
-You can also set several parameters for the grid, such as the grid step, vertically or horizontally:
+You can also set several parameters. All those properties are available:
 
 ```objc
+// Index label properties
+@property (nonatomic, strong) UIFont* indexLabelFont;
+@property (nonatomic) UIColor* indexLabelTextColor;
+@property (nonatomic) UIColor* indexLabelBackgroundColor;
+
+// Value label properties
+@property (nonatomic, strong) UIFont* valueLabelFont;
+@property (nonatomic) UIColor* valueLabelTextColor;
+@property (nonatomic) UIColor* valueLabelBackgroundColor;
+@property (nonatomic) ValueLabelPositionType valueLabelPosition;
+
+// Number of visible step in the chart
+@property (nonatomic, readwrite) int gridStep;
 @property (nonatomic, readwrite) int verticalGridStep;
 @property (nonatomic, readwrite) int horizontalGridStep;
-```
 
-And to hide the grid just set the drawInnedGrid variable to false:
+// Margin of the chart
+@property (nonatomic, readwrite) CGFloat margin;
 
-```objc
-@property(nonatomic, readwrite) BOOL drawInnerGrid; 
-```
+// Let you change the axis color and the axis line width
+@property (nonatomic, readwrite) UIColor* axisColor;
+@property (nonatomic, readwrite) CGFloat axisLineWidth;
 
-If you don't want to fill the chart just set the fillColor variable to nil:
-
-```objc
+// Chart parameters
+@property (nonatomic, readwrite) UIColor* color;
 @property (nonatomic, readwrite) UIColor* fillColor;
+@property (nonatomic, readwrite) CGFloat lineWidth;
+
+// Grid parameters
+@property (nonatomic, readwrite) BOOL drawInnerGrid;
+@property (nonatomic, readwrite) UIColor* innerGridColor;
+@property (nonatomic, readwrite) CGFloat innerGridLineWidth;
+
+// Smoothing
+@property (nonatomic, readwrite) BOOL bezierSmoothing;
+@property (nonatomic, readwrite) CGFloat bezierSmoothingTension;
+
+// Animations
+@property (nonatomic, readwrite) CGFloat animationDuration;
 ```
 
 

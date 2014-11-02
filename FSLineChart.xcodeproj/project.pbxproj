@@ -432,6 +432,7 @@
 				8EA19B0B19DB55E9005F4BD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8EA19B0C19DB55E9005F4BD1 /* Build configuration list for PBXNativeTarget "FSLineChartTests" */ = {
 			isa = XCConfigurationList;
@@ -440,6 +441,7 @@
 				8EA19B0E19DB55E9005F4BD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
