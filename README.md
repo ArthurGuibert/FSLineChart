@@ -36,6 +36,7 @@ lineChart.labelForValue = ^(CGFloat value) {
 
 You can also set several parameters. All those properties are available:
 
+```objc
 // Index label properties
 @property (copy) FSLabelForIndexGetter labelForIndex;
 @property (nonatomic, strong) UIFont* indexLabelFont;
