@@ -36,46 +36,56 @@ lineChart.labelForValue = ^(CGFloat value) {
 
 You can also set several parameters. All those properties are available:
 
-```objc
 // Index label properties
+@property (copy) FSLabelForIndexGetter labelForIndex;
 @property (nonatomic, strong) UIFont* indexLabelFont;
 @property (nonatomic) UIColor* indexLabelTextColor;
 @property (nonatomic) UIColor* indexLabelBackgroundColor;
 
 // Value label properties
+@property (copy) FSLabelForValueGetter labelForValue;
 @property (nonatomic, strong) UIFont* valueLabelFont;
 @property (nonatomic) UIColor* valueLabelTextColor;
 @property (nonatomic) UIColor* valueLabelBackgroundColor;
 @property (nonatomic) ValueLabelPositionType valueLabelPosition;
 
 // Number of visible step in the chart
-@property (nonatomic, readwrite) int gridStep;
-@property (nonatomic, readwrite) int verticalGridStep;
-@property (nonatomic, readwrite) int horizontalGridStep;
+@property (nonatomic) int gridStep;
+@property (nonatomic) int verticalGridStep;
+@property (nonatomic) int horizontalGridStep;
 
 // Margin of the chart
-@property (nonatomic, readwrite) CGFloat margin;
+@property (nonatomic) CGFloat margin;
 
-// Let you change the axis color and the axis line width
-@property (nonatomic, readwrite) UIColor* axisColor;
-@property (nonatomic, readwrite) CGFloat axisLineWidth;
+@property (nonatomic) CGFloat axisWidth;
+@property (nonatomic) CGFloat axisHeight;
+
+// Decoration parameters, let you pick the color of the line as well as the color of the axis
+@property (nonatomic, strong) UIColor* axisColor;
+@property (nonatomic) CGFloat axisLineWidth;
 
 // Chart parameters
-@property (nonatomic, readwrite) UIColor* color;
-@property (nonatomic, readwrite) UIColor* fillColor;
-@property (nonatomic, readwrite) CGFloat lineWidth;
+@property (nonatomic, strong) UIColor* color;
+@property (nonatomic, strong) UIColor* fillColor;
+@property (nonatomic) CGFloat lineWidth;
+
+// Data points
+@property (nonatomic) BOOL displayDataPoint;
+@property (nonatomic, strong) UIColor* dataPointColor;
+@property (nonatomic, strong) UIColor* dataPointBackgroundColor;
+@property (nonatomic) CGFloat dataPointRadius;
 
 // Grid parameters
-@property (nonatomic, readwrite) BOOL drawInnerGrid;
-@property (nonatomic, readwrite) UIColor* innerGridColor;
-@property (nonatomic, readwrite) CGFloat innerGridLineWidth;
+@property (nonatomic) BOOL drawInnerGrid;
+@property (nonatomic, strong) UIColor* innerGridColor;
+@property (nonatomic) CGFloat innerGridLineWidth;
 
 // Smoothing
-@property (nonatomic, readwrite) BOOL bezierSmoothing;
-@property (nonatomic, readwrite) CGFloat bezierSmoothingTension;
+@property (nonatomic) BOOL bezierSmoothing;
+@property (nonatomic) CGFloat bezierSmoothingTension;
 
 // Animations
-@property (nonatomic, readwrite) CGFloat animationDuration;
+@property (nonatomic) CGFloat animationDuration;
 ```
 
 

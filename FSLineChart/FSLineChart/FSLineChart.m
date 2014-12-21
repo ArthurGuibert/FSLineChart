@@ -62,6 +62,10 @@
     
     [self strokeChart];
     
+    if(_displayDataPoint) {
+        [self strokeDataPoints];
+    }
+    
     if(_labelForValue) {
         for(int i=0;i<_verticalGridStep;i++) {
             CGPoint p = CGPointMake(_margin + (_valueLabelPosition == ValueLabelRight ? _axisWidth : 0), _axisHeight + _margin - (i + 1) * _axisHeight / _verticalGridStep);
@@ -151,10 +155,6 @@
     CGContextAddLineToPoint(ctx, _margin, _axisHeight + _margin + 3);
     CGContextStrokePath(ctx);
     
-    //CGContextMoveToPoint(ctx, _margin, _axisHeight + _margin);
-    //CGContextAddLineToPoint(ctx, _axisWidth + _margin, _axisHeight + _margin);
-    //CGContextStrokePath(ctx);
-    
     float scale = 1.0f;
     int q = (int)_data.count / _horizontalGridStep;
     scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
@@ -210,7 +210,6 @@
     UIBezierPath *noPath = [UIBezierPath bezierPath];
     UIBezierPath* fill = [UIBezierPath bezierPath];
     UIBezierPath* noFill = [UIBezierPath bezierPath];
-    
     
     CGFloat minBound = MIN(_min, 0);
     CGFloat maxBound = MAX(_max, 0);
@@ -273,6 +272,34 @@
     
 }
 
+- (void)strokeDataPoints
+{
+    CGFloat minBound = MIN(_min, 0);
+    CGFloat maxBound = MAX(_max, 0);
+    
+    CGFloat scale = _axisHeight / (maxBound - minBound);
+    
+    //CAShapeLayer *dataPointsLayer = [CAShapeLayer layer];
+    
+    for(int i=0;i<_data.count;i++) {
+        CGPoint p = [self getPointForIndex:i withScale:scale];
+        p.y +=  minBound * scale;
+
+        UIBezierPath* circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(p.x - _dataPointRadius, p.y - _dataPointRadius, _dataPointRadius * 2, _dataPointRadius * 2)];
+        
+        CAShapeLayer *fillLayer = [CAShapeLayer layer];
+        fillLayer.frame = CGRectMake(p.x, p.y, _dataPointRadius, _dataPointRadius);
+        fillLayer.bounds = CGRectMake(p.x, p.y, _dataPointRadius, _dataPointRadius);
+        fillLayer.path = circle.CGPath;
+        fillLayer.strokeColor = _dataPointColor.CGColor;
+        fillLayer.fillColor = _dataPointBackgroundColor.CGColor;
+        fillLayer.lineWidth = 1;
+        fillLayer.lineJoin = kCALineJoinRound;
+        
+        [self.layer addSublayer:fillLayer];
+    }
+}
+
 - (void)setDefaultParameters
 {
     _color = [UIColor fsLightBlue];
@@ -291,6 +318,10 @@
     _innerGridLineWidth = 0.5;
     _axisLineWidth = 1;
     _animationDuration = 0.5;
+    _displayDataPoint = NO;
+    _dataPointRadius = 1;
+    _dataPointColor = _color;
+    _dataPointBackgroundColor = _color;
     
     // Labels attributes
     _indexLabelBackgroundColor = [UIColor clearColor];
@@ -357,15 +388,21 @@
             newMax +=  step;
         }
         
-        
         _min = newMin;
         _max = newMax;
+        
+        if(_max < _min) {
+            float tmp = _max;
+            _max = _min;
+            _min = tmp;
+        }
+        
     }
 }
 
 - (CGFloat)getUpperRoundNumber:(CGFloat)value forGridStep:(int)gridStep
 {
-    if(value < 0)
+    if(value <= 0)
         return 0;
     
     // We consider a round number the following by 0.5 step instead of true round number (with step of 1)

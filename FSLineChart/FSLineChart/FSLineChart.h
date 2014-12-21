@@ -48,36 +48,42 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 @property (nonatomic) ValueLabelPositionType valueLabelPosition;
 
 // Number of visible step in the chart
-@property (nonatomic, readwrite) int gridStep;
-@property (nonatomic, readwrite) int verticalGridStep;
-@property (nonatomic, readwrite) int horizontalGridStep;
+@property (nonatomic) int gridStep;
+@property (nonatomic) int verticalGridStep;
+@property (nonatomic) int horizontalGridStep;
 
 // Margin of the chart
-@property (nonatomic, readwrite) CGFloat margin;
+@property (nonatomic) CGFloat margin;
 
-@property (nonatomic, readonly) CGFloat axisWidth;
-@property (nonatomic, readonly) CGFloat axisHeight;
+@property (nonatomic) CGFloat axisWidth;
+@property (nonatomic) CGFloat axisHeight;
 
 // Decoration parameters, let you pick the color of the line as well as the color of the axis
-@property (nonatomic, readwrite) UIColor* axisColor;
-@property (nonatomic, readwrite) CGFloat axisLineWidth;
+@property (nonatomic, strong) UIColor* axisColor;
+@property (nonatomic) CGFloat axisLineWidth;
 
 // Chart parameters
-@property (nonatomic, readwrite) UIColor* color;
-@property (nonatomic, readwrite) UIColor* fillColor;
-@property (nonatomic, readwrite) CGFloat lineWidth;
+@property (nonatomic, strong) UIColor* color;
+@property (nonatomic, strong) UIColor* fillColor;
+@property (nonatomic) CGFloat lineWidth;
+
+// Data points
+@property (nonatomic) BOOL displayDataPoint;
+@property (nonatomic, strong) UIColor* dataPointColor;
+@property (nonatomic, strong) UIColor* dataPointBackgroundColor;
+@property (nonatomic) CGFloat dataPointRadius;
 
 // Grid parameters
-@property (nonatomic, readwrite) BOOL drawInnerGrid;
-@property (nonatomic, readwrite) UIColor* innerGridColor;
-@property (nonatomic, readwrite) CGFloat innerGridLineWidth;
+@property (nonatomic) BOOL drawInnerGrid;
+@property (nonatomic, strong) UIColor* innerGridColor;
+@property (nonatomic) CGFloat innerGridLineWidth;
 
 // Smoothing
-@property (nonatomic, readwrite) BOOL bezierSmoothing;
-@property (nonatomic, readwrite) CGFloat bezierSmoothingTension;
+@property (nonatomic) BOOL bezierSmoothing;
+@property (nonatomic) CGFloat bezierSmoothingTension;
 
 // Animations
-@property (nonatomic, readwrite) CGFloat animationDuration;
+@property (nonatomic) CGFloat animationDuration;
 
 // Set the actual data for the chart, and then render it to the view.
 - (void)setChartData:(NSArray *)chartData;
