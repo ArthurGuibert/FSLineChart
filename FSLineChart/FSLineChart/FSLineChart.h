@@ -30,8 +30,10 @@ typedef NSString *(^FSLabelForIndexGetter)(NSUInteger index);
 typedef NSString *(^FSLabelForValueGetter)(CGFloat value);
 
 typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
-    ValueLabelLeft,
-    ValueLabelRight
+    // ValueLabelLeft, // @mhergon Pull request
+    ValueLabelRight,
+    ValueLabelLeftInside, // @mhergon Pull request
+    ValueLabelLeftOutside // @mhergon Pull request
 };
 
 // Index label properties
@@ -84,6 +86,12 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 
 // Animations
 @property (nonatomic) CGFloat animationDuration;
+
+// @mhergon Pull request
+@property (nonatomic) BOOL drawVerticalGrid;
+@property (nonatomic) BOOL drawHorizontalGrid;
+
+
 
 // Set the actual data for the chart, and then render it to the view.
 - (void)setChartData:(NSArray *)chartData;
