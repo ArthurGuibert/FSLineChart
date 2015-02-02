@@ -82,7 +82,7 @@
     
     if(_labelForValue) {
         for(int i=0;i<_verticalGridStep;i++) {
-            CGPoint p = CGPointMake(_margin + (_valueLabelPosition == ValueLabelRight ? _axisWidth : 0), _axisHeight + _margin - (i + 1) * _axisHeight / _verticalGridStep);
+            CGPoint p = CGPointMake(_margin + (_valueLabelPosition == ValueLabelRight ? _axisWidth : (_valueLabelPosition == ValueLabelLeftInside ? (_axisWidth / _horizontalGridStep) * 0.6 : 0)), _axisHeight + _margin - (i + 1) * _axisHeight / _verticalGridStep); // @mhergon Pull request
             
             NSString* text = _labelForValue(minBound + (maxBound - minBound) / _verticalGridStep * (i + 1));
             
@@ -179,41 +179,51 @@
     
     // draw grid
     if(_drawInnerGrid) {
-        for(int i=0;i<_horizontalGridStep;i++) {
-            CGContextSetStrokeColorWithColor(ctx, [_innerGridColor CGColor]);
-            CGContextSetLineWidth(ctx, _innerGridLineWidth);
-            
-            CGPoint point = CGPointMake((1 + i) * _axisWidth / _horizontalGridStep * scale + _margin, _margin);
-            
-            CGContextMoveToPoint(ctx, point.x, point.y);
-            CGContextAddLineToPoint(ctx, point.x, _axisHeight + _margin);
-            CGContextStrokePath(ctx);
-            
-            CGContextSetStrokeColorWithColor(ctx, [_axisColor CGColor]);
-            CGContextSetLineWidth(ctx, _axisLineWidth);
-            CGContextMoveToPoint(ctx, point.x - 0.5f, _axisHeight + _margin);
-            CGContextAddLineToPoint(ctx, point.x - 0.5f, _axisHeight + _margin + 3);
-            CGContextStrokePath(ctx);
-        }
         
-        for(int i=0;i<_verticalGridStep + 1;i++) {
-            // If the value is zero then we display the horizontal axis
-            CGFloat v = maxBound - (maxBound - minBound) / _verticalGridStep * i;
-            
-            if(v == 0) {
-                CGContextSetLineWidth(ctx, _axisLineWidth);
-                CGContextSetStrokeColorWithColor(ctx, [_axisColor CGColor]);
-            } else {
+        if (_drawVerticalGrid) { // @mhergon Pull request
+        
+            for(int i=0;i<_horizontalGridStep;i++) {
                 CGContextSetStrokeColorWithColor(ctx, [_innerGridColor CGColor]);
                 CGContextSetLineWidth(ctx, _innerGridLineWidth);
+                
+                CGPoint point = CGPointMake((1 + i) * _axisWidth / _horizontalGridStep * scale + _margin, _margin);
+                
+                CGContextMoveToPoint(ctx, point.x, point.y);
+                CGContextAddLineToPoint(ctx, point.x, _axisHeight + _margin);
+                CGContextStrokePath(ctx);
+                
+                CGContextSetStrokeColorWithColor(ctx, [_axisColor CGColor]);
+                CGContextSetLineWidth(ctx, _axisLineWidth);
+                CGContextMoveToPoint(ctx, point.x - 0.5f, _axisHeight + _margin);
+                CGContextAddLineToPoint(ctx, point.x - 0.5f, _axisHeight + _margin + 3);
+                CGContextStrokePath(ctx);
             }
             
-            CGPoint point = CGPointMake(_margin, (i) * _axisHeight / _verticalGridStep + _margin);
-            
-            CGContextMoveToPoint(ctx, point.x, point.y);
-            CGContextAddLineToPoint(ctx, _axisWidth + _margin, point.y);
-            CGContextStrokePath(ctx);
         }
+        
+        if (_drawHorizontalGrid) { // @mhergon Pull request
+            
+            for(int i=0;i<_verticalGridStep + 1;i++) {
+                // If the value is zero then we display the horizontal axis
+                CGFloat v = maxBound - (maxBound - minBound) / _verticalGridStep * i;
+                
+                if(v == 0) {
+                    CGContextSetLineWidth(ctx, _axisLineWidth);
+                    CGContextSetStrokeColorWithColor(ctx, [_axisColor CGColor]);
+                } else {
+                    CGContextSetStrokeColorWithColor(ctx, [_innerGridColor CGColor]);
+                    CGContextSetLineWidth(ctx, _innerGridLineWidth);
+                }
+                
+                CGPoint point = CGPointMake(_margin, (i) * _axisHeight / _verticalGridStep + _margin);
+                
+                CGContextMoveToPoint(ctx, point.x, point.y);
+                CGContextAddLineToPoint(ctx, _axisWidth + _margin, point.y);
+                CGContextStrokePath(ctx);
+            }
+            
+        }
+        
     }
     
 }
@@ -346,6 +356,10 @@
     _valueLabelTextColor = [UIColor grayColor];
     _valueLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
     _valueLabelPosition = ValueLabelRight;
+    
+    // @mhergon Pull request
+    _drawHorizontalGrid = YES;
+    _drawVerticalGrid = YES;
 }
 
 - (void)computeBounds
