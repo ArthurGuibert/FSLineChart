@@ -99,7 +99,10 @@
              context:nil]
             .size.width;
             
-            UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - width - 6, p.y + 2, width + 2, 14)];
+            CGFloat xPadding = 6;
+            CGFloat xOffset = (_valueLabelPosition == ValueLabelRight ? width + xPadding : 0 - xPadding);
+            
+            UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - xOffset, p.y + 2, width + 2, 14)];
             label.text = text;
             label.font = _valueLabelFont;
             label.textColor = _valueLabelTextColor;
