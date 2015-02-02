@@ -88,4 +88,7 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 // Set the actual data for the chart, and then render it to the view.
 - (void)setChartData:(NSArray *)chartData;
 
+// Clear all rendered data from the view.
+- (void)clearChartData;
+
 @end
