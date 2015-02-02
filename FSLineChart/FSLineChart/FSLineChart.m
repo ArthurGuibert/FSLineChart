@@ -100,7 +100,11 @@
             .size.width;
             
             CGFloat xPadding = 6;
-            CGFloat xOffset = (_valueLabelPosition == ValueLabelRight ? width + xPadding : 0 - xPadding);
+            CGFloat xOffset = width + xPadding;
+            
+            if (_valueLabelPosition == ValueLabelLeftMirrored) {
+                xOffset = -xPadding;
+            }
             
             UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - xOffset, p.y + 2, width + 2, 14)];
             label.text = text;
