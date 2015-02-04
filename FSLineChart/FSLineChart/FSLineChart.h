@@ -31,7 +31,8 @@ typedef NSString *(^FSLabelForValueGetter)(CGFloat value);
 
 typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
     ValueLabelLeft,
-    ValueLabelRight
+    ValueLabelRight,
+    ValueLabelLeftMirrored
 };
 
 // Index label properties
