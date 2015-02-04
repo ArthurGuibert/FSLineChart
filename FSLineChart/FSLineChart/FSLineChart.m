@@ -64,6 +64,10 @@
 
 - (void)setChartData:(NSArray *)chartData
 {
+    if (chartData.count == 0) {
+        return;
+    }
+    
     _data = [NSMutableArray arrayWithArray:chartData];
     
     [self computeBounds];
