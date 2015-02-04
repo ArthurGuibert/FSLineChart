@@ -26,6 +26,7 @@
 @interface FSLineChart ()
 
 @property (nonatomic, strong) NSMutableArray* data;
+@property (nonatomic, strong) NSMutableArray* layers;
 
 @property (nonatomic) CGFloat min;
 @property (nonatomic) CGFloat max;
@@ -56,6 +57,7 @@
 
 - (void)commonInit
 {
+    _layers = [NSMutableArray array];
     self.backgroundColor = [UIColor whiteColor];
     [self setDefaultParameters];
 }
@@ -161,7 +163,9 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [self drawGrid];
+    if (_data.count > 0) {
+        [self drawGrid];
+    }
 }
 
 - (void)drawGrid
@@ -225,26 +229,29 @@
     
 }
 
+- (void)clearChartData
+{
+    for (CAShapeLayer *layer in self.layers) {
+        [layer removeFromSuperlayer];
+    }
+    [self.layers removeAllObjects];
+}
+
 - (void)strokeChart
 {
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    UIBezierPath *noPath = [UIBezierPath bezierPath];
-    UIBezierPath* fill = [UIBezierPath bezierPath];
-    UIBezierPath* noFill = [UIBezierPath bezierPath];
-    
     CGFloat minBound = MIN(_min, 0);
     CGFloat maxBound = MAX(_max, 0);
     
     CGFloat scale = _axisHeight / (maxBound - minBound);
     
-    noPath = [self getLinePath:0 withSmoothing:_bezierSmoothing close:NO];
-    path = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
+    UIBezierPath *noPath = [self getLinePath:0 withSmoothing:_bezierSmoothing close:NO];
+    UIBezierPath *path = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
     
-    noFill = [self getLinePath:0 withSmoothing:_bezierSmoothing close:YES];
-    fill = [self getLinePath:scale withSmoothing:_bezierSmoothing close:YES];
+    UIBezierPath *noFill = [self getLinePath:0 withSmoothing:_bezierSmoothing close:YES];
+    UIBezierPath *fill = [self getLinePath:scale withSmoothing:_bezierSmoothing close:YES];
     
     if(_fillColor) {
-        CAShapeLayer *fillLayer = [CAShapeLayer layer];
+        CAShapeLayer* fillLayer = [CAShapeLayer layer];
         fillLayer.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y + minBound * scale, self.bounds.size.width, self.bounds.size.height);
         fillLayer.bounds = self.bounds;
         fillLayer.path = fill.CGPath;
@@ -254,6 +261,7 @@
         fillLayer.lineJoin = kCALineJoinRound;
         
         [self.layer addSublayer:fillLayer];
+        [self.layers addObject:fillLayer];
         
         CABasicAnimation *fillAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         fillAnimation.duration = _animationDuration;
@@ -274,6 +282,7 @@
     pathLayer.lineJoin = kCALineJoinRound;
     
     [self.layer addSublayer:pathLayer];
+    [self.layers addObject:pathLayer];
     
     if(_fillColor) {
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
@@ -300,12 +309,10 @@
     
     CGFloat scale = _axisHeight / (maxBound - minBound);
     
-    //CAShapeLayer *dataPointsLayer = [CAShapeLayer layer];
-    
     for(int i=0;i<_data.count;i++) {
         CGPoint p = [self getPointForIndex:i withScale:scale];
         p.y +=  minBound * scale;
-
+        
         UIBezierPath* circle = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(p.x - _dataPointRadius, p.y - _dataPointRadius, _dataPointRadius * 2, _dataPointRadius * 2)];
         
         CAShapeLayer *fillLayer = [CAShapeLayer layer];
@@ -318,6 +325,7 @@
         fillLayer.lineJoin = kCALineJoinRound;
         
         [self.layer addSublayer:fillLayer];
+        [self.layers addObject:fillLayer];
     }
 }
 
