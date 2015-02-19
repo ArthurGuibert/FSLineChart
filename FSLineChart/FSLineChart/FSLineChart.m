@@ -55,6 +55,11 @@
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [self commonInit];
+}
+
 - (void)commonInit
 {
     _layers = [NSMutableArray array];
