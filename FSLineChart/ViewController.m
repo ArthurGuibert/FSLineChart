@@ -23,17 +23,12 @@
     [self.view addSubview:[self chart2]];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Creating the charts
 
 -(FSLineChart*)chart1 {
     // Generating some dummy data
     NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:10];
-    srand(time(nil));
+    
     for(int i=0;i<10;i++) {
         int r = (rand() + rand()) % 1000;
         chartData[i] = [NSNumber numberWithInt:r + 200];

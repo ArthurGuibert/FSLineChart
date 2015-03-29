@@ -37,6 +37,8 @@
 
 @implementation FSLineChart
 
+#pragma mark - Initialisation
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -77,9 +79,6 @@
     
     [self computeBounds];
     
-    CGFloat minBound = MIN(_min, 0);
-    CGFloat maxBound = MAX(_max, 0);
-    
     // No data
     if(isnan(_max)) {
         _max = 1;
@@ -93,82 +92,104 @@
     
     if(_labelForValue) {
         for(int i=0;i<_verticalGridStep;i++) {
-            CGPoint p = CGPointMake(_margin + (_valueLabelPosition == ValueLabelRight ? _axisWidth : 0), _axisHeight + _margin - (i + 1) * _axisHeight / _verticalGridStep);
+            UILabel* label = [self createLabelForValue:i];
             
-            NSString* text = _labelForValue(minBound + (maxBound - minBound) / _verticalGridStep * (i + 1));
-            
-            if(!text)
-                continue;
-            
-            CGRect rect = CGRectMake(_margin, p.y + 2, self.frame.size.width - _margin * 2 - 4.0f, 14);
-            
-            float width =
-            [text
-             boundingRectWithSize:rect.size
-             options:NSStringDrawingUsesLineFragmentOrigin
-             attributes:@{ NSFontAttributeName:_valueLabelFont }
-             context:nil]
-            .size.width;
-            
-            CGFloat xPadding = 6;
-            CGFloat xOffset = width + xPadding;
-            
-            if (_valueLabelPosition == ValueLabelLeftMirrored) {
-                xOffset = -xPadding;
+            if(label) {
+                [self addSubview:label];
             }
-            
-            UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - xOffset, p.y + 2, width + 2, 14)];
-            label.text = text;
-            label.font = _valueLabelFont;
-            label.textColor = _valueLabelTextColor;
-            label.textAlignment = NSTextAlignmentCenter;
-            label.backgroundColor = _valueLabelBackgroundColor;
-            
-            [self addSubview:label];
         }
     }
     
     if(_labelForIndex) {
-        float scale = 1.0f;
-        int q = (int)_data.count / _horizontalGridStep;
-        scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
-        
         for(int i=0;i<_horizontalGridStep + 1;i++) {
-            NSInteger itemIndex = q * i;
-            if(itemIndex >= _data.count)
-            {
-                itemIndex = _data.count - 1;
+            UILabel* label = [self createLabelForIndex:i];
+            
+            if(label) {
+                [self addSubview:label];
             }
-            
-            NSString* text = _labelForIndex(itemIndex);
-            
-            if(!text)
-                continue;
-            
-            CGPoint p = CGPointMake(_margin + i * (_axisWidth / _horizontalGridStep) * scale, _axisHeight + _margin);
-            
-            CGRect rect = CGRectMake(_margin, p.y + 2, self.frame.size.width - _margin * 2 - 4.0f, 14);
-            
-            float width =
-            [text
-             boundingRectWithSize:rect.size
-             options:NSStringDrawingUsesLineFragmentOrigin
-             attributes:@{ NSFontAttributeName:_indexLabelFont }
-             context:nil]
-            .size.width;
-            
-            UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - 4.0f, p.y + 2, width + 2, 14)];
-            label.text = text;
-            label.font = _indexLabelFont;
-            label.textColor = _indexLabelTextColor;
-            label.backgroundColor = _indexLabelBackgroundColor;
-            
-            [self addSubview:label];
         }
     }
     
     [self setNeedsDisplay];
 }
+
+#pragma mark - Labels creation
+
+- (UILabel*)createLabelForValue: (NSUInteger)index
+{
+    CGFloat minBound = [self minVerticalBound];
+    CGFloat maxBound = [self maxVerticalBound];
+    
+    CGPoint p = CGPointMake(_margin + (_valueLabelPosition == ValueLabelRight ? _axisWidth : 0), _axisHeight + _margin - (index + 1) * _axisHeight / _verticalGridStep);
+    
+    NSString* text = _labelForValue(minBound + (maxBound - minBound) / _verticalGridStep * (index + 1));
+    
+    if(!text)
+    {
+        return nil;
+    }
+    
+    CGRect rect = CGRectMake(_margin, p.y + 2, self.frame.size.width - _margin * 2 - 4.0f, 14);
+    
+    float width = [text boundingRectWithSize:rect.size
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:@{ NSFontAttributeName:_valueLabelFont }
+                                     context:nil].size.width;
+    
+    CGFloat xPadding = 6;
+    CGFloat xOffset = width + xPadding;
+    
+    if (_valueLabelPosition == ValueLabelLeftMirrored) {
+        xOffset = -xPadding;
+    }
+    
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - xOffset, p.y + 2, width + 2, 14)];
+    label.text = text;
+    label.font = _valueLabelFont;
+    label.textColor = _valueLabelTextColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = _valueLabelBackgroundColor;
+    
+    return label;
+}
+
+- (UILabel*)createLabelForIndex: (NSUInteger)index
+{
+    CGFloat scale = [self horizontalScale];
+    NSInteger q = (int)_data.count / _horizontalGridStep;
+    NSInteger itemIndex = q * index;
+    
+    if(itemIndex >= _data.count)
+    {
+        itemIndex = _data.count - 1;
+    }
+    
+    NSString* text = _labelForIndex(itemIndex);
+    
+    if(!text)
+    {
+        return nil;
+    }
+    
+    CGPoint p = CGPointMake(_margin + index * (_axisWidth / _horizontalGridStep) * scale, _axisHeight + _margin);
+    
+    CGRect rect = CGRectMake(_margin, p.y + 2, self.frame.size.width - _margin * 2 - 4.0f, 14);
+    
+    float width = [text boundingRectWithSize:rect.size
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:@{ NSFontAttributeName:_indexLabelFont }
+                                     context:nil].size.width;
+    
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(p.x - 4.0f, p.y + 2, width + 2, 14)];
+    label.text = text;
+    label.font = _indexLabelFont;
+    label.textColor = _indexLabelTextColor;
+    label.backgroundColor = _indexLabelBackgroundColor;
+    
+    return label;
+}
+
+#pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect
 {
@@ -189,13 +210,9 @@
     CGContextAddLineToPoint(ctx, _margin, _axisHeight + _margin + 3);
     CGContextStrokePath(ctx);
     
-    float scale = 1.0f;
-    int q = (int)_data.count / _horizontalGridStep;
-    scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
-    
-    
-    CGFloat minBound = MIN(_min, 0);
-    CGFloat maxBound = MAX(_max, 0);
+    CGFloat scale = [self horizontalScale];
+    CGFloat minBound = [self minVerticalBound];
+    CGFloat maxBound = [self maxVerticalBound];
     
     // draw grid
     if(_drawInnerGrid) {
@@ -248,8 +265,8 @@
 
 - (void)strokeChart
 {
-    CGFloat minBound = MIN(_min, 0);
-    CGFloat maxBound = MAX(_max, 0);
+    CGFloat minBound = [self minVerticalBound];
+    CGFloat maxBound = [self maxVerticalBound];
     
     CGFloat scale = _axisHeight / (maxBound - minBound);
     
@@ -313,9 +330,8 @@
 
 - (void)strokeDataPoints
 {
-    CGFloat minBound = MIN(_min, 0);
-    CGFloat maxBound = MAX(_max, 0);
-    
+    CGFloat minBound = [self minVerticalBound];
+    CGFloat maxBound = [self maxVerticalBound];
     CGFloat scale = _axisHeight / (maxBound - minBound);
     
     for(int i=0;i<_data.count;i++) {
@@ -370,6 +386,30 @@
     _valueLabelTextColor = [UIColor grayColor];
     _valueLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
     _valueLabelPosition = ValueLabelRight;
+}
+
+#pragma mark - Chart scale & boundaries
+
+- (CGFloat)horizontalScale
+{
+    CGFloat scale = 1.0f;
+    NSInteger q = (int)_data.count / _horizontalGridStep;
+    
+    if(_data.count > 1) {
+        scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
+    }
+    
+    return scale;
+}
+
+- (CGFloat)minVerticalBound
+{
+    return MIN(_min, 0);
+}
+
+- (CGFloat)maxVerticalBound
+{
+    return MAX(_max, 0);
 }
 
 - (void)computeBounds
@@ -438,6 +478,8 @@
     }
 }
 
+#pragma mark - Chart utils
+
 - (CGFloat)getUpperRoundNumber:(CGFloat)value forGridStep:(int)gridStep
 {
     if(value <= 0)
@@ -463,14 +505,19 @@
     _horizontalGridStep = gridStep;
 }
 
-- (CGPoint)getPointForIndex:(NSInteger)idx withScale:(CGFloat)scale
+- (CGPoint)getPointForIndex:(NSUInteger)idx withScale:(CGFloat)scale
 {
-    if(idx < 0 || idx >= _data.count)
+    if(idx >= _data.count)
         return CGPointZero;
     
-    // Compute the point in the view from the data with a set scale
+    // Compute the point position in the view from the data with a set scale value
     NSNumber* number = _data[idx];
-    return CGPointMake(_margin + idx * (_axisWidth / (_data.count - 1)), _axisHeight + _margin - [number floatValue] * scale);
+    
+    if(_data.count < 2) {
+        return CGPointMake(_margin, _axisHeight + _margin - [number floatValue] * scale);
+    } else {
+        return CGPointMake(_margin + idx * (_axisWidth / (_data.count - 1)), _axisHeight + _margin - [number floatValue] * scale);
+    }
 }
 
 - (UIBezierPath*)getLinePath:(float)scale withSmoothing:(BOOL)smoothed close:(BOOL)closed
