@@ -69,6 +69,40 @@
     [self setDefaultParameters];
 }
 
+- (void)setDefaultParameters
+{
+    _color = [UIColor fsLightBlue];
+    _fillColor = [_color colorWithAlphaComponent:0.25];
+    _verticalGridStep = 3;
+    _horizontalGridStep = 3;
+    _margin = 5.0f;
+    _axisWidth = self.frame.size.width - 2 * _margin;
+    _axisHeight = self.frame.size.height - 2 * _margin;
+    _axisColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+    _innerGridColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+    _drawInnerGrid = YES;
+    _bezierSmoothing = YES;
+    _bezierSmoothingTension = 0.2;
+    _lineWidth = 1;
+    _innerGridLineWidth = 0.5;
+    _axisLineWidth = 1;
+    _animationDuration = 0.5;
+    _displayDataPoint = NO;
+    _dataPointRadius = 1;
+    _dataPointColor = _color;
+    _dataPointBackgroundColor = _color;
+    
+    // Labels attributes
+    _indexLabelBackgroundColor = [UIColor clearColor];
+    _indexLabelTextColor = [UIColor grayColor];
+    _indexLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
+    
+    _valueLabelBackgroundColor = [UIColor colorWithWhite:1 alpha:0.75];
+    _valueLabelTextColor = [UIColor grayColor];
+    _valueLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
+    _valueLabelPosition = ValueLabelRight;
+}
+
 - (void)setChartData:(NSArray *)chartData
 {
     if (chartData.count == 0) {
@@ -352,40 +386,6 @@
         [self.layer addSublayer:fillLayer];
         [self.layers addObject:fillLayer];
     }
-}
-
-- (void)setDefaultParameters
-{
-    _color = [UIColor fsLightBlue];
-    _fillColor = [_color colorWithAlphaComponent:0.25];
-    _verticalGridStep = 3;
-    _horizontalGridStep = 3;
-    _margin = 5.0f;
-    _axisWidth = self.frame.size.width - 2 * _margin;
-    _axisHeight = self.frame.size.height - 2 * _margin;
-    _axisColor = [UIColor colorWithWhite:0.7 alpha:1.0];
-    _innerGridColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    _drawInnerGrid = YES;
-    _bezierSmoothing = YES;
-    _bezierSmoothingTension = 0.2;
-    _lineWidth = 1;
-    _innerGridLineWidth = 0.5;
-    _axisLineWidth = 1;
-    _animationDuration = 0.5;
-    _displayDataPoint = NO;
-    _dataPointRadius = 1;
-    _dataPointColor = _color;
-    _dataPointBackgroundColor = _color;
-    
-    // Labels attributes
-    _indexLabelBackgroundColor = [UIColor clearColor];
-    _indexLabelTextColor = [UIColor grayColor];
-    _indexLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
-    
-    _valueLabelBackgroundColor = [UIColor colorWithWhite:1 alpha:0.75];
-    _valueLabelTextColor = [UIColor grayColor];
-    _valueLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
-    _valueLabelPosition = ValueLabelRight;
 }
 
 #pragma mark - Chart scale & boundaries
