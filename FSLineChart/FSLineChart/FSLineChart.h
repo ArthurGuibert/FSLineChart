@@ -92,4 +92,9 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 // Clear all rendered data from the view.
 - (void)clearChartData;
 
+// Get the bounds of the chart
+- (CGFloat)minVerticalBound;
+- (CGFloat)maxVerticalBound;
+
+
 @end

@@ -103,13 +103,30 @@
     _valueLabelPosition = ValueLabelRight;
 }
 
-- (void)setChartData:(NSArray *)chartData
+- (void)layoutSubviews
 {
-    if (chartData.count == 0) {
+    _axisWidth = self.frame.size.width - 2 * _margin;
+    _axisHeight = self.frame.size.height - 2 * _margin;
+    
+    // Removing the old label views as well as the chart layers.
+    [self.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj removeFromSuperview];
+    }];
+    
+    [self.layers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CALayer* layer = (CALayer*)obj;
+        [layer removeFromSuperlayer];
+    }];
+    
+    [self layoutChart];
+    [super layoutSubviews];
+}
+
+- (void)layoutChart
+{
+    if(_data == nil) {
         return;
     }
-    
-    _data = [NSMutableArray arrayWithArray:chartData];
     
     [self computeBounds];
     
@@ -145,6 +162,16 @@
     }
     
     [self setNeedsDisplay];
+}
+
+- (void)setChartData:(NSArray *)chartData
+{
+    if (chartData == nil || chartData.count == 0) {
+        return;
+    }
+    
+    _data = [NSMutableArray arrayWithArray:chartData];
+    [self layoutChart];
 }
 
 #pragma mark - Labels creation
@@ -301,8 +328,12 @@
 {
     CGFloat minBound = [self minVerticalBound];
     CGFloat maxBound = [self maxVerticalBound];
+    CGFloat spread = maxBound - minBound;
+    CGFloat scale = 0;
     
-    CGFloat scale = _axisHeight / (maxBound - minBound);
+    if (spread != 0) {
+        scale = _axisHeight / spread;
+    }
     
     UIBezierPath *noPath = [self getLinePath:0 withSmoothing:_bezierSmoothing close:NO];
     UIBezierPath *path = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
@@ -366,7 +397,12 @@
 {
     CGFloat minBound = [self minVerticalBound];
     CGFloat maxBound = [self maxVerticalBound];
-    CGFloat scale = _axisHeight / (maxBound - minBound);
+    CGFloat spread = maxBound - minBound;
+    CGFloat scale = 0;
+    
+    if (spread != 0) {
+        scale = _axisHeight / spread;
+    }
     
     for(int i=0;i<_data.count;i++) {
         CGPoint p = [self getPointForIndex:i withScale:scale];
@@ -507,8 +543,9 @@
 
 - (CGPoint)getPointForIndex:(NSUInteger)idx withScale:(CGFloat)scale
 {
-    if(idx >= _data.count)
+    if(idx >= _data.count) {
         return CGPointZero;
+    }
     
     // Compute the point position in the view from the data with a set scale value
     NSNumber* number = _data[idx];

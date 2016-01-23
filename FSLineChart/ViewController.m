@@ -12,6 +12,9 @@
 
 @interface ViewController ()
 
+@property (nonatomic, strong) IBOutlet FSLineChart *chart;
+@property (nonatomic, strong) IBOutlet FSLineChart *chartWithDates;
+
 @end
 
 @implementation ViewController
@@ -19,14 +22,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.view addSubview:[self chart1]];
-    [self.view addSubview:[self chart2]];
+    [self loadSimpleChart];
+    [self loadChartWithDates];
 }
 
-#pragma mark - Creating the charts
+#pragma mark - Setting up the charts
 
--(FSLineChart*)chart1 {
-    // Generating some dummy data
+- (void)loadSimpleChart {
     NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:10];
     
     for(int i=0;i<10;i++) {
@@ -34,49 +36,22 @@
         chartData[i] = [NSNumber numberWithInt:r + 200];
     }
     
-    // Creating the line chart
-    FSLineChart* lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 60, [UIScreen mainScreen].bounds.size.width - 40, 166)];
-    lineChart.verticalGridStep = 5;
-    lineChart.horizontalGridStep = 9;
+    // Setting up the line chart
+    self.chart.verticalGridStep = 5;
+    self.chart.horizontalGridStep = 9;
     
-    lineChart.labelForIndex = ^(NSUInteger item) {
+    self.chart.labelForIndex = ^(NSUInteger item) {
         return [NSString stringWithFormat:@"%lu",(unsigned long)item];
     };
     
-    lineChart.labelForValue = ^(CGFloat value) {
+    self.chart.labelForValue = ^(CGFloat value) {
         return [NSString stringWithFormat:@"%.f", value];
     };
     
-    [lineChart setChartData:chartData];
-    return lineChart;
+    [self.chart setChartData:chartData];
 }
 
--(FSLineChart*)chart2 {
-    // Generating some dummy data
-    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:101];
-    for(int i=0;i<101;i++) {
-        chartData[i] = [NSNumber numberWithFloat:(float)i / 30.0f + (float)(rand() % 100) / 200.0f];
-    }
-    // Creating the line chart
-    FSLineChart* lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 260, [UIScreen mainScreen].bounds.size.width - 40, 166)];
-    lineChart.verticalGridStep = 4;
-    lineChart.horizontalGridStep = 2;
-    lineChart.color = [UIColor fsOrange];
-    lineChart.fillColor = nil;
-    
-    lineChart.labelForIndex = ^(NSUInteger item) {
-        return [NSString stringWithFormat:@"%lu%%",(unsigned long)item];
-    };
-    
-    lineChart.labelForValue = ^(CGFloat value) {
-        return [NSString stringWithFormat:@"%.f €", value];
-    };
-    
-    [lineChart setChartData:chartData];
-    return lineChart;
-}
-
--(FSLineChart*)chart3 {
+- (void)loadChartWithDates {
     // Generating some dummy data
     NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:7];
     for(int i=0;i<7;i++) {
@@ -85,24 +60,26 @@
     
     NSArray* months = @[@"January", @"February", @"March", @"April", @"May", @"June", @"July"];
     
-    // Creating the line chart
-    FSLineChart* lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 60, [UIScreen mainScreen].bounds.size.width - 40, 166)];
-    lineChart.verticalGridStep = 6;
-    lineChart.horizontalGridStep = 3; // 151,187,205,0.2
-    lineChart.color = [UIColor colorWithRed:151.0f/255.0f green:187.0f/255.0f blue:205.0f/255.0f alpha:1.0f];
-    lineChart.fillColor = [lineChart.color colorWithAlphaComponent:0.3];
+    // Setting up the line chart
+    _chartWithDates.verticalGridStep = 6;
+    _chartWithDates.horizontalGridStep = 3;
+    _chartWithDates.fillColor = nil;
+    _chartWithDates.displayDataPoint = YES;
+    _chartWithDates.dataPointColor = [UIColor fsOrange];
+    _chartWithDates.dataPointBackgroundColor = [UIColor fsOrange];
+    _chartWithDates.dataPointRadius = 2;
+    _chartWithDates.color = [_chartWithDates.dataPointColor colorWithAlphaComponent:0.3];
+    _chartWithDates.valueLabelPosition = ValueLabelLeftMirrored;
     
-    lineChart.labelForIndex = ^(NSUInteger item) {
+    _chartWithDates.labelForIndex = ^(NSUInteger item) {
         return months[item];
     };
     
-    lineChart.labelForValue = ^(CGFloat value) {
+    _chartWithDates.labelForValue = ^(CGFloat value) {
         return [NSString stringWithFormat:@"%.02f €", value];
     };
     
-    [lineChart setChartData:chartData];
-    
-    return lineChart;
+    [_chartWithDates setChartData:chartData];
 }
 
 @end
