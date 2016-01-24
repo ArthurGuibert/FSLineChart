@@ -21,7 +21,7 @@ FSLineChart is a subclass of UIView so it can be added as regular view. The bloc
 ```objc
 NSArray* months = @[@"January", @"February", @"March", @"April", @"May", @"June", @"July"];
     
-FSLineChart* lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 260, [UIScreen mainScreen].bounds.size.width - 40, 166)];
+FSLineChart* lineChart = [[FSLineChart alloc] initWithFrame:frame];
 
 lineChart.labelForIndex = ^(NSUInteger item) {
     return months[item];
