@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 	s.name = "FSLineChart"
-	s.version = "0.1.7"
+	s.version = "0.1.8"
 	s.summary = "FSLineChart is a simple chart library for iOS."
 	s.description = <<-DESC
 	FSLineChart is a simple chart library for iOS. You can change whatever you want: size, color, units,...
