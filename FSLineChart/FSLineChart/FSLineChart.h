@@ -21,13 +21,15 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FSLineChart : UIView
 
 // Block definition for getting a label for a set index (use case: date, units,...)
-typedef NSString *(^FSLabelForIndexGetter)(NSUInteger index);
+typedef NSString * _Nullable (^FSLabelForIndexGetter)(NSUInteger index);
 
 // Same as above, but for the value (for adding a currency, or a unit symbol for example)
-typedef NSString *(^FSLabelForValueGetter)(CGFloat value);
+typedef NSString * _Nullable (^FSLabelForValueGetter)(CGFloat value);
 
 typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
     ValueLabelLeft,
@@ -36,13 +38,13 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 };
 
 // Index label properties
-@property (copy) FSLabelForIndexGetter labelForIndex;
+@property (copy, nullable) FSLabelForIndexGetter labelForIndex;
 @property (nonatomic, strong) UIFont* indexLabelFont;
 @property (nonatomic) UIColor* indexLabelTextColor;
 @property (nonatomic) UIColor* indexLabelBackgroundColor;
 
 // Value label properties
-@property (copy) FSLabelForValueGetter labelForValue;
+@property (copy, nullable) FSLabelForValueGetter labelForValue;
 @property (nonatomic, strong) UIFont* valueLabelFont;
 @property (nonatomic) UIColor* valueLabelTextColor;
 @property (nonatomic) UIColor* valueLabelBackgroundColor;
@@ -65,7 +67,7 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 
 // Chart parameters
 @property (nonatomic, strong) UIColor* color;
-@property (nonatomic, strong) UIColor* fillColor;
+@property (nonatomic, strong, nullable) UIColor* fillColor;
 @property (nonatomic) CGFloat lineWidth;
 
 // Data points
@@ -87,7 +89,7 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 @property (nonatomic) CGFloat animationDuration;
 
 // Set the actual data for the chart, and then render it to the view.
-- (void)setChartData:(nonnull NSArray<NSNumber*> *)chartData;
+- (void)setChartData:(NSArray<NSNumber*> *)chartData;
 
 // Clear all rendered data from the view.
 - (void)clearChartData;
@@ -96,5 +98,6 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 - (CGFloat)minVerticalBound;
 - (CGFloat)maxVerticalBound;
 
-
 @end
+
+NS_ASSUME_NONNULL_END
