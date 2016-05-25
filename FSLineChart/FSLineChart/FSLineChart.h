@@ -95,6 +95,8 @@ typedef NS_ENUM(NSInteger, ValueLabelPositionType) {
 // Get the bounds of the chart
 - (CGFloat)minVerticalBound;
 - (CGFloat)maxVerticalBound;
-
-
+/**
+ * gradient in fillcolor mode
+ */
+@property (nonatomic , strong) CAGradientLayer *gradientLayer;
 @end

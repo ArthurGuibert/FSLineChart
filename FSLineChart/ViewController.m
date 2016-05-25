@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) IBOutlet FSLineChart *chart;
 @property (nonatomic, strong) IBOutlet FSLineChart *chartWithDates;
+@property (nonatomic, strong) IBOutlet FSLineChart *chartWithGradient;
 
 @end
 
@@ -24,6 +25,7 @@
     
     [self loadSimpleChart];
     [self loadChartWithDates];
+    [self loadGradientChart];
 }
 
 #pragma mark - Setting up the charts
@@ -80,6 +82,52 @@
     };
     
     [_chartWithDates setChartData:chartData];
+}
+
+- (void)loadGradientChart {
+//    FSLineChart * lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 260 + 166 + 10, [UIScreen mainScreen].bounds.size.width - 40, 166)];
+    _chartWithGradient.verticalGridStep = 4;
+    _chartWithGradient.horizontalGridStep = 10;
+    
+    _chartWithGradient.labelForIndex = ^(NSUInteger item) {
+        return [NSString stringWithFormat:@"%lu",(unsigned long)item];
+    };
+    
+    _chartWithGradient.labelForValue = ^(CGFloat value) {
+        return [NSString stringWithFormat:@"%.f", value];
+    };
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    //gradient direction
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint   = CGPointMake(0, 1);
+    
+    //gradient colors
+    gradientLayer.colors = @[(__bridge id)[UIColor redColor].CGColor,
+                             (__bridge id)[UIColor yellowColor].CGColor,
+                             (__bridge id)[UIColor greenColor].CGColor
+                             ];
+    //gradient position for colors
+    gradientLayer.locations = @[@(0.3f), @(0.7f),@(0.9f)];
+    
+    _chartWithGradient.fillColor                 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
+    /**
+     *  gradient only effect when fillColor isn't nil;
+     */
+    _chartWithGradient.gradientLayer             = gradientLayer;
+    _chartWithGradient.lineWidth                 = 2;
+    _chartWithGradient.color                     = [UIColor fsLightBlue];
+    _chartWithGradient.valueLabelPosition        = ValueLabelLeft;
+    _chartWithGradient.valueLabelTextColor       = [UIColor fsDarkGray];
+    _chartWithGradient.indexLabelTextColor       = [UIColor fsDarkGray];
+    _chartWithGradient.bezierSmoothing           = YES;
+    
+    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:101];
+    for(int i=0;i<101;i++) {
+        chartData[i] = [NSNumber numberWithFloat:(float)i / 30.0f + (float)(rand() % 100) / 200.0f];
+    }
+    
+    [_chartWithGradient setChartData:chartData];
 }
 
 @end
