@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -32,13 +32,21 @@
                                     <constraint firstAttribute="height" constant="166" id="mPh-F7-Spf"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fb3-cl-ajH" userLabel="Chart 3" customClass="FSLineChart">
+                                <rect key="frame" x="36" y="434" width="528" height="151"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="bTN-h0-UGb" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="16" id="4KJ-j1-ScK"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Fb3-cl-ajH" secondAttribute="bottom" constant="15" id="WGa-R5-xyQ"/>
+                            <constraint firstItem="Fb3-cl-ajH" firstAttribute="leading" secondItem="bTN-h0-UGb" secondAttribute="leading" id="bNy-E5-dfw"/>
                             <constraint firstItem="d4w-YB-QSH" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="32" id="cWF-L9-Wca"/>
                             <constraint firstItem="d4w-YB-QSH" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="16" id="d38-ev-f0M"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="d4w-YB-QSH" secondAttribute="bottom" constant="32" id="dD7-ui-USm"/>
+                            <constraint firstItem="Fb3-cl-ajH" firstAttribute="trailing" secondItem="bTN-h0-UGb" secondAttribute="trailing" id="fNG-Ca-OcO"/>
+                            <constraint firstItem="Fb3-cl-ajH" firstAttribute="top" secondItem="bTN-h0-UGb" secondAttribute="bottom" constant="18" id="sKr-3m-8eU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="bTN-h0-UGb" secondAttribute="trailing" constant="16" id="uPN-93-Auf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="d4w-YB-QSH" secondAttribute="trailing" constant="16" id="v3s-0y-rmP"/>
                             <constraint firstItem="bTN-h0-UGb" firstAttribute="top" secondItem="d4w-YB-QSH" secondAttribute="bottom" constant="32" id="yE7-pt-gi9"/>
@@ -52,6 +60,7 @@
                     <connections>
                         <outlet property="chart" destination="d4w-YB-QSH" id="ga1-cN-Dgv"/>
                         <outlet property="chartWithDates" destination="bTN-h0-UGb" id="cRc-De-bfT"/>
+                        <outlet property="chartWithGradient" destination="Fb3-cl-ajH" id="Uu5-hy-iEB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

@@ -361,6 +361,12 @@
         fillAnimation.fromValue = (id)noFill.CGPath;
         fillAnimation.toValue = (id)fill.CGPath;
         [fillLayer addAnimation:fillAnimation forKey:@"path"];
+        
+        if (_gradientLayer) {
+            _gradientLayer.frame = fillLayer.frame;
+            _gradientLayer.mask  = fillLayer;
+            [self.layer addSublayer:_gradientLayer];
+        }
     }
     
     CAShapeLayer *pathLayer = [CAShapeLayer layer];
