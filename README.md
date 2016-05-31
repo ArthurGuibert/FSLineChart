@@ -7,6 +7,7 @@ Screenshots
 ---
 <img src="Screenshots/fslinechart.png" width="320px" />&nbsp;
 <img src="Screenshots/fslinechart2.png" width="320px" />
+<img src="Screenshots/lineGradient.png" width="320px" />
 
 Installing FSLineChart
 ---

@@ -87,7 +87,7 @@
 - (void)loadGradientChart {
 //    FSLineChart * lineChart = [[FSLineChart alloc] initWithFrame:CGRectMake(20, 260 + 166 + 10, [UIScreen mainScreen].bounds.size.width - 40, 166)];
     _chartWithGradient.verticalGridStep = 4;
-    _chartWithGradient.horizontalGridStep = 10;
+//    _chartWithGradient.horizontalGridStep = 10;
     
     _chartWithGradient.labelForIndex = ^(NSUInteger item) {
         return [NSString stringWithFormat:@"%lu",(unsigned long)item];
@@ -114,8 +114,8 @@
     /**
      *  gradient only effect when fillColor isn't nil;
      */
-    _chartWithGradient.gradientLayer             = gradientLayer;
-    _chartWithGradient.lineWidth                 = 2;
+//    _chartWithGradient.gradientLayer             = gradientLayer;
+    _chartWithGradient.lineWidth                 = 0.2;
     _chartWithGradient.color                     = [UIColor fsLightBlue];
     _chartWithGradient.valueLabelPosition        = ValueLabelLeft;
     _chartWithGradient.valueLabelTextColor       = [UIColor fsDarkGray];
@@ -124,7 +124,8 @@
     
     NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:101];
     for(int i=0;i<101;i++) {
-        chartData[i] = [NSNumber numberWithFloat:(float)i / 30.0f + (float)(rand() % 100) / 200.0f];
+//        chartData[i] = [NSNumber numberWithFloat:(float)i / 30.0f + (float)(rand() % 100) / 200.0f];
+        chartData[i] = [NSNumber numberWithFloat:(float)(arc4random() % 200) + 1];
     }
     
     [_chartWithGradient setChartData:chartData];
