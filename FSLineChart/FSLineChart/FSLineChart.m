@@ -313,7 +313,8 @@
             CGContextStrokePath(ctx);
         }
     }
-    
+    //@step should be pop to release
+    UIGraphicsPopContext();
 }
 
 - (void)clearChartData
