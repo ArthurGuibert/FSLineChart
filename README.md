@@ -16,7 +16,24 @@ Add the contents of the FSLineChart project to your directory or simply add the 
 
 How to use
 ---
-FSLineChart is a subclass of UIView so it can be added as regular view. The block structure allows you to format the values displayed on the chart the way you want. Here is a simple example:
+FSLineChart is a subclass of UIView so it can be added as regular view. The block structure allows you to format the values displayed on the chart the way you want. Here is a simple swift example:
+
+```swift
+var data: [Int] = []
+        
+// Generate some dummy data
+for _ in 0...10 {
+    data.append(Int(20 + (arc4random() % 100)))
+}
+
+verticalGridStep = 5
+horizontalGridStep = 9
+labelForIndex = { "\($0)" }
+labelForValue = { "$\($0)" }
+setChartData(data)
+```
+
+Or in objective-c
 
 ```objc
 NSArray* months = @[@"January", @"February", @"March", @"April", @"May", @"June", @"July"];
