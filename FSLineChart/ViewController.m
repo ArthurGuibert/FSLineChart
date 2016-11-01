@@ -12,7 +12,6 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) IBOutlet FSLineChart *chart;
 @property (nonatomic, strong) IBOutlet FSLineChart *chartWithDates;
 
 @end
@@ -29,26 +28,27 @@
 #pragma mark - Setting up the charts
 
 - (void)loadSimpleChart {
-    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:10];
-    
-    for(int i=0;i<10;i++) {
-        int r = (rand() + rand()) % 1000;
-        chartData[i] = [NSNumber numberWithInt:r + 200];
-    }
-    
-    // Setting up the line chart
-    self.chart.verticalGridStep = 5;
-    self.chart.horizontalGridStep = 9;
-    
-    self.chart.labelForIndex = ^(NSUInteger item) {
-        return [NSString stringWithFormat:@"%lu",(unsigned long)item];
-    };
-    
-    self.chart.labelForValue = ^(CGFloat value) {
-        return [NSString stringWithFormat:@"%.f", value];
-    };
-    
-    [self.chart setChartData:chartData];
+//    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:10];
+//    
+//    for(int i=0;i<10;i++) {
+//        unsigned int r = (rand()) % 50;
+//        chartData[i] = [NSNumber numberWithInt:r + 200];
+//    }
+//    
+//    // Setting up the line chart
+//    self.chart.verticalGridStep = 5;
+//    self.chart.horizontalGridStep = 9;
+//    self.chart.shouldStartFromZero = NO;
+//    
+//    self.chart.labelForIndex = ^(NSUInteger item) {
+//        return [NSString stringWithFormat:@"%lu",(unsigned long)item];
+//    };
+//    
+//    self.chart.labelForValue = ^(CGFloat value) {
+//        return [NSString stringWithFormat:@"%.f", value];
+//    };
+//    
+//    [self.chart setChartData:chartData];
 }
 
 - (void)loadChartWithDates {

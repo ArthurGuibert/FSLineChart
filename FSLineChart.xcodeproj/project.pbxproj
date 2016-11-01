@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E67717B1DC89E3F00EA02FA /* ExampleChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E67717A1DC89E3F00EA02FA /* ExampleChart.swift */; };
 		8EA19AEC19DB55E9005F4BD1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA19AEB19DB55E9005F4BD1 /* main.m */; };
 		8EA19AEF19DB55E9005F4BD1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA19AEE19DB55E9005F4BD1 /* AppDelegate.m */; };
 		8EA19AF219DB55E9005F4BD1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA19AF119DB55E9005F4BD1 /* ViewController.m */; };
@@ -29,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8E6771791DC89E3F00EA02FA /* FSLineChart-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FSLineChart-Bridging-Header.h"; sourceTree = "<group>"; };
+		8E67717A1DC89E3F00EA02FA /* ExampleChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleChart.swift; sourceTree = "<group>"; };
 		8EA19AE619DB55E9005F4BD1 /* FSLineChart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FSLineChart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EA19AEA19DB55E9005F4BD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EA19AEB19DB55E9005F4BD1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -96,6 +99,8 @@
 				8EA19AF619DB55E9005F4BD1 /* Images.xcassets */,
 				8EA19AF819DB55E9005F4BD1 /* LaunchScreen.xib */,
 				8EA19AE919DB55E9005F4BD1 /* Supporting Files */,
+				8E67717A1DC89E3F00EA02FA /* ExampleChart.swift */,
+				8E6771791DC89E3F00EA02FA /* FSLineChart-Bridging-Header.h */,
 			);
 			path = FSLineChart;
 			sourceTree = "<group>";
@@ -186,6 +191,7 @@
 				TargetAttributes = {
 					8EA19AE519DB55E9005F4BD1 = {
 						CreatedOnToolsVersion = 6.0.1;
+						LastSwiftMigration = 0800;
 					};
 					8EA19AFE19DB55E9005F4BD1 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -238,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EA19AF219DB55E9005F4BD1 /* ViewController.m in Sources */,
+				8E67717B1DC89E3F00EA02FA /* ExampleChart.swift in Sources */,
 				8EA19AEF19DB55E9005F4BD1 /* AppDelegate.m in Sources */,
 				8EA19AEC19DB55E9005F4BD1 /* main.m in Sources */,
 				8EA19B1119DB5696005F4BD1 /* FSLineChart.m in Sources */,
@@ -364,10 +371,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = NO;
 				INFOPLIST_FILE = FSLineChart/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.slipcorp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FSLineChart/FSLineChart-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -376,10 +388,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = NO;
 				INFOPLIST_FILE = FSLineChart/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.slipcorp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FSLineChart/FSLineChart-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -387,6 +403,7 @@
 		8EA19B0D19DB55E9005F4BD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -407,6 +424,7 @@
 		8EA19B0E19DB55E9005F4BD1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

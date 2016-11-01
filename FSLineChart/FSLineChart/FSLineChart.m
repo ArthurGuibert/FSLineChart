@@ -59,6 +59,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self commonInit];
 }
 
@@ -327,13 +328,7 @@
 - (void)strokeChart
 {
     CGFloat minBound = [self minVerticalBound];
-    CGFloat maxBound = [self maxVerticalBound];
-    CGFloat spread = maxBound - minBound;
-    CGFloat scale = 0;
-    
-    if (spread != 0) {
-        scale = _axisHeight / spread;
-    }
+    CGFloat scale = [self verticalScale];
     
     UIBezierPath *noPath = [self getLinePath:0 withSmoothing:_bezierSmoothing close:NO];
     UIBezierPath *path = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
@@ -396,13 +391,7 @@
 - (void)strokeDataPoints
 {
     CGFloat minBound = [self minVerticalBound];
-    CGFloat maxBound = [self maxVerticalBound];
-    CGFloat spread = maxBound - minBound;
-    CGFloat scale = 0;
-    
-    if (spread != 0) {
-        scale = _axisHeight / spread;
-    }
+    CGFloat scale = [self verticalScale];
     
     for(int i=0;i<_data.count;i++) {
         CGPoint p = [self getPointForIndex:i withScale:scale];
@@ -435,6 +424,20 @@
         scale = (CGFloat)(q * _horizontalGridStep) / (CGFloat)(_data.count - 1);
     }
     
+    return scale;
+}
+
+- (CGFloat)verticalScale
+{
+    CGFloat minBound = [self minVerticalBound];
+    CGFloat maxBound = [self maxVerticalBound];
+    CGFloat spread = maxBound - minBound;
+    CGFloat scale = 0;
+    
+    if (spread != 0) {
+        scale = _axisHeight / spread;
+    }
+
     return scale;
 }
 
