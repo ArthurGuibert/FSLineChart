@@ -315,6 +315,7 @@
         }
     }
     
+    UIGraphicsPopContext();
 }
 
 - (void)clearChartData
