@@ -16,7 +16,7 @@ class ExampleChart: FSLineChart {
     public func load() {
         var data: [Int] = []
         
-        // Set some dummy data
+        // Generate some dummy data
         for _ in 0...10 {
             data.append(Int(20 + (arc4random() % 100)))
         }

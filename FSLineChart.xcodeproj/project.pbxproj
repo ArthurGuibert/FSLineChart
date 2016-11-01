@@ -95,12 +95,12 @@
 				8EA19AEE19DB55E9005F4BD1 /* AppDelegate.m */,
 				8EA19AF019DB55E9005F4BD1 /* ViewController.h */,
 				8EA19AF119DB55E9005F4BD1 /* ViewController.m */,
+				8E67717A1DC89E3F00EA02FA /* ExampleChart.swift */,
+				8E6771791DC89E3F00EA02FA /* FSLineChart-Bridging-Header.h */,
 				8EA19AF319DB55E9005F4BD1 /* Main.storyboard */,
 				8EA19AF619DB55E9005F4BD1 /* Images.xcassets */,
 				8EA19AF819DB55E9005F4BD1 /* LaunchScreen.xib */,
 				8EA19AE919DB55E9005F4BD1 /* Supporting Files */,
-				8E67717A1DC89E3F00EA02FA /* ExampleChart.swift */,
-				8E6771791DC89E3F00EA02FA /* FSLineChart-Bridging-Header.h */,
 			);
 			path = FSLineChart;
 			sourceTree = "<group>";

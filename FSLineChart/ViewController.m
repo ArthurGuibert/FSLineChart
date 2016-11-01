@@ -20,36 +20,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self loadSimpleChart];
     [self loadChartWithDates];
 }
 
-#pragma mark - Setting up the charts
-
-- (void)loadSimpleChart {
-//    NSMutableArray* chartData = [NSMutableArray arrayWithCapacity:10];
-//    
-//    for(int i=0;i<10;i++) {
-//        unsigned int r = (rand()) % 50;
-//        chartData[i] = [NSNumber numberWithInt:r + 200];
-//    }
-//    
-//    // Setting up the line chart
-//    self.chart.verticalGridStep = 5;
-//    self.chart.horizontalGridStep = 9;
-//    self.chart.shouldStartFromZero = NO;
-//    
-//    self.chart.labelForIndex = ^(NSUInteger item) {
-//        return [NSString stringWithFormat:@"%lu",(unsigned long)item];
-//    };
-//    
-//    self.chart.labelForValue = ^(CGFloat value) {
-//        return [NSString stringWithFormat:@"%.f", value];
-//    };
-//    
-//    [self.chart setChartData:chartData];
-}
+#pragma mark - Setting up the chart
 
 - (void)loadChartWithDates {
     // Generating some dummy data
