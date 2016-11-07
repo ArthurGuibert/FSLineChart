@@ -25,8 +25,8 @@
 
 @interface FSLineChart ()
 
-@property (nonatomic, strong) NSMutableArray* data;
-@property (nonatomic, strong) NSMutableArray* layers;
+@property (nonatomic, strong) NSMutableArray<NSNumber*> * data;
+@property (nonatomic, strong) NSMutableArray<CALayer*>  * layers;
 
 @property (nonatomic) CGFloat min;
 @property (nonatomic) CGFloat max;
@@ -65,7 +65,7 @@
 
 - (void)commonInit
 {
-    _layers = [NSMutableArray array];
+    _layers = [NSMutableArray<CALayer*> array];
     self.backgroundColor = [UIColor whiteColor];
     [self setDefaultParameters];
 }
@@ -114,9 +114,8 @@
         [obj removeFromSuperview];
     }];
     
-    [self.layers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CALayer* layer = (CALayer*)obj;
-        [layer removeFromSuperlayer];
+    [self.layers enumerateObjectsUsingBlock:^(__kindof CALayer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj removeFromSuperlayer];
     }];
     
     [self layoutChart];
@@ -165,12 +164,8 @@
     [self setNeedsDisplay];
 }
 
-- (void)setChartData:(NSArray *)chartData
+- (void)setChartData:(nonnull NSArray<NSNumber*> *)chartData
 {
-    if (chartData == nil || chartData.count == 0) {
-        return;
-    }
-    
     _data = [NSMutableArray arrayWithArray:chartData];
     [self layoutChart];
 }
@@ -272,7 +267,7 @@
     CGContextAddLineToPoint(ctx, _margin, _axisHeight + _margin + 3);
     CGContextStrokePath(ctx);
     
-    CGFloat scale = [self horizontalScale];
+    CGFloat scale    = [self horizontalScale];
     CGFloat minBound = [self minVerticalBound];
     CGFloat maxBound = [self maxVerticalBound];
     
@@ -332,10 +327,10 @@
     CGFloat scale = [self verticalScale];
     
     UIBezierPath *noPath = [self getLinePath:0 withSmoothing:_bezierSmoothing close:NO];
-    UIBezierPath *path = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
-    
+    UIBezierPath *path   = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
+
     UIBezierPath *noFill = [self getLinePath:0 withSmoothing:_bezierSmoothing close:YES];
-    UIBezierPath *fill = [self getLinePath:scale withSmoothing:_bezierSmoothing close:YES];
+    UIBezierPath *fill   = [self getLinePath:scale withSmoothing:_bezierSmoothing close:YES];
     
     if(_fillColor) {
         CAShapeLayer* fillLayer = [CAShapeLayer layer];
@@ -541,7 +536,7 @@
 
 - (void)setGridStep:(int)gridStep
 {
-    _verticalGridStep = gridStep;
+    _verticalGridStep   = gridStep;
     _horizontalGridStep = gridStep;
 }
 
@@ -593,7 +588,7 @@
             controlPoint[0].y = p.y + m.y * _bezierSmoothingTension;
             
             // Second control point
-            nextPoint = [self getPointForIndex:i + 2 withScale:scale];
+            nextPoint     = [self getPointForIndex:i + 2 withScale:scale];
             previousPoint = [self getPointForIndex:i withScale:scale];
             p = [self getPointForIndex:i + 1 withScale:scale];
             m = CGPointZero;
