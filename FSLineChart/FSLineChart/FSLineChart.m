@@ -324,6 +324,12 @@
         [layer removeFromSuperlayer];
     }
     [self.layers removeAllObjects];
+    
+    //Removes all X/Y labels 
+    NSArray *viewsToRemove = [self subviews];
+    for (UIView *v in viewsToRemove) {
+        [v removeFromSuperview];
+    }
 }
 
 - (void)strokeChart
