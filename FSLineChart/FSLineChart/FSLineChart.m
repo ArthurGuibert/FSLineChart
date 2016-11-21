@@ -299,7 +299,7 @@
             // If the value is zero then we display the horizontal axis
             CGFloat v = maxBound - (maxBound - minBound) / _verticalGridStep * i;
             
-            if(v == 0) {
+            if (v == 0 && !(maxBound == 0 && minBound == 0)) {
                 CGContextSetLineWidth(ctx, _axisLineWidth);
                 CGContextSetStrokeColorWithColor(ctx, [_axisColor CGColor]);
             } else {
@@ -330,6 +330,10 @@
 {
     CGFloat minBound = [self minVerticalBound];
     CGFloat scale = [self verticalScale];
+    
+    if (minBound == 0 && maxBound == 0) {
+        scale = _axisHeight;
+    }
     
     UIBezierPath *noPath = [self getLinePath:0 withSmoothing:_bezierSmoothing close:NO];
     UIBezierPath *path = [self getLinePath:scale withSmoothing:_bezierSmoothing close:NO];
