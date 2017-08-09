@@ -106,7 +106,11 @@ You can also set several parameters. Some of the parameters including `color` an
 @property (nonatomic) CGFloat animationDuration;
 ```
 
+If you will plot new data into the chart and would like to remove the existing data, call:
 
+    [lineChart setChartData:clearChartData];
+
+ 
 Examples
 ---
 You can clone the repo to see a simple example. I'm also using FSLineChart on [ChartLoot](https://github.com/ArthurGuibert/ChartLoot) if you want to see the integration in a bigger project.
